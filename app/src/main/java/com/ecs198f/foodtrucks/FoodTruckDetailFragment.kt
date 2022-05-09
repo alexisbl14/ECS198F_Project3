@@ -29,10 +29,10 @@ class FoodTruckDetailFragment : Fragment() {
                 foodTruckDetailPriceLevel.text = "$".repeat(it.priceLevel)
                 foodTruckDetailLocation.text = it.location
                 foodTruckDetailTime.text = it.formattedTimeInterval
-                foodItemListRecyclerView.apply {
-                    adapter = recyclerViewAdapter
-                    layoutManager = LinearLayoutManager(context)
-                }
+                //foodItemListRecyclerView.apply {
+                //    adapter = recyclerViewAdapter
+                //    layoutManager = LinearLayoutManager(context)
+                //}
             }
 
             (requireActivity() as MainActivity).apply {
