@@ -13,9 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FoodTruckMenuFragment : Fragment() {
-
-    private val args: FoodTruckDetailFragmentArgs by navArgs()
+class FoodTruckMenuFragment(private var foodItems: List<FoodItem>) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,30 +23,12 @@ class FoodTruckMenuFragment : Fragment() {
         val binding = FragmentFoodTruckMenuBinding.inflate(inflater, container, false)
         val recyclerViewAdapter = FoodItemListRecyclerViewAdapter(listOf())
 
-        args.foodTruck.let{
             binding.foodItemListRecyclerView.apply {
                 adapter = recyclerViewAdapter
                 layoutManager = LinearLayoutManager(context)
             }
 
-            (requireActivity() as MainActivity).apply {
-                title = it.name
-
-                foodTruckService.listFoodItems(it.id).enqueue(object : Callback<List<FoodItem>> {
-                    override fun onResponse(
-                        call: Call<List<FoodItem>>,
-                        response: Response<List<FoodItem>>
-                    ) {
-                        recyclerViewAdapter.updateItems(response.body()!!)
-                    }
-
-                    override fun onFailure(call: Call<List<FoodItem>>, t: Throwable) {
-                        throw t
-                    }
-                })
-            }
-        }
-
+        recyclerViewAdapter.updateItems(foodItems)
 
         return binding.root
     }

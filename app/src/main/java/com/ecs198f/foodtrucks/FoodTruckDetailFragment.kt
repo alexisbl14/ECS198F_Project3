@@ -15,6 +15,7 @@ import retrofit2.Response
 
 class FoodTruckDetailFragment : Fragment() {
     private val args: FoodTruckDetailFragmentArgs by navArgs()
+    private lateinit var foodItems : List<FoodItem>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +44,9 @@ class FoodTruckDetailFragment : Fragment() {
                         call: Call<List<FoodItem>>,
                         response: Response<List<FoodItem>>
                     ) {
-                        recyclerViewAdapter.updateItems(response.body()!!)
+                        //recyclerViewAdapter.updateItems(response.body()!!)
+                        // pass data to fragment constructor
+                        foodItems = response.body()!!
                     }
 
                     override fun onFailure(call: Call<List<FoodItem>>, t: Throwable) {
