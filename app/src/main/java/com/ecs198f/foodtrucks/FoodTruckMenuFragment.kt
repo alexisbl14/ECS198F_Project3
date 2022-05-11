@@ -37,9 +37,9 @@ class FoodTruckMenuFragment(private var foodTruck: FoodTruck) : Fragment() {
                 ) {
                     //recyclerViewAdapter.updateItems(response.body()!!)
                     // pass data to fragment constructor
-                    Log.d("ignores this", "success item call")
+                    //Log.d("ignores this", "success item call")
                     recyclerViewAdapter.updateItems(response.body()!!)
-                    Log.d("ignores this", "finish item api call")
+                    //Log.d("ignores this", "finish item api call")
 
                 }
 

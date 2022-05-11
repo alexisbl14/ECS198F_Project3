@@ -33,9 +33,9 @@ class FoodTruckReviewsFragment(private var foodTruck: FoodTruck) : Fragment() {
                     call: Call<List<Review>>,
                     response: Response<List<Review>>
                 ) {
-                    Log.d("ignores this", "success review call")
+                    //Log.d("ignores this", "success review call")
                     recyclerViewAdapter.updateItems(response.body()!!)
-                    Log.d("ignores this", "finish review api call")
+                    //Log.d("ignores this", "finish review api call")
                 }
 
                 override fun onFailure(call: Call<List<Review>>, t: Throwable) {
