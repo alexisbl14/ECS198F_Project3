@@ -49,40 +49,40 @@ class FoodTruckDetailFragment : Fragment() {
             (requireActivity() as MainActivity).apply {
                 title = it.name
 
-                foodTruckService.listFoodItems(it.id).enqueue(object : Callback<List<FoodItem>> {
-                    override fun onResponse(
-                        call: Call<List<FoodItem>>,
-                        response: Response<List<FoodItem>>
-                    ) {
+                //foodTruckService.listFoodItems(it.id).enqueue(object : Callback<List<FoodItem>> {
+                  //  override fun onResponse(
+                    //    call: Call<List<FoodItem>>,
+                      //  response: Response<List<FoodItem>>
+                    //) {
                         //recyclerViewAdapter.updateItems(response.body()!!)
                         // pass data to fragment constructor
-                        Log.d("ignores this", "success item call")
-                        foodItems = response.body()!!
-                        Log.d("ignore", foodItems[0].name)
-                        Log.d("ignores this", "finish item api call")
+                     //   Log.d("ignores this", "success item call")
+                       // foodItems = response.body()!!
+                       // Log.d("ignore", foodItems[0].name)
+                       // Log.d("ignores this", "finish item api call")
 
-                    }
+                   // }
 
-                    override fun onFailure(call: Call<List<FoodItem>>, t: Throwable) {
-                        throw t
-                    }
-                })
+                   // override fun onFailure(call: Call<List<FoodItem>>, t: Throwable) {
+                     //   throw t
+                   // }
+                //})
 
-                foodTruckService.listFoodReviews(it.id).enqueue(object : Callback<List<Review>> {
-                    override fun onResponse(
-                        call: Call<List<Review>>,
-                        response: Response<List<Review>>
-                    ) {
-                        Log.d("ignores this", "success review call")
-                        reviews = response.body()!!
-                        Log.d("ignore", reviews[0].authorName)
-                        Log.d("ignores this", "finish review api call")
-                    }
+                //foodTruckService.listFoodReviews(it.id).enqueue(object : Callback<List<Review>> {
+                //    override fun onResponse(
+                //        call: Call<List<Review>>,
+                //        response: Response<List<Review>>
+                //    ) {
+                //        Log.d("ignores this", "success review call")
+                //        reviews = response.body()!!
+                //        Log.d("ignore", reviews[0].authorName)
+                //        Log.d("ignores this", "finish review api call")
+                //    }
 
-                    override fun onFailure(call: Call<List<Review>>, t: Throwable) {
-                        throw t
-                    }
-                })
+                //    override fun onFailure(call: Call<List<Review>>, t: Throwable) {
+                 //       throw t
+                //    }
+               // })
             }
         }
 
@@ -91,7 +91,7 @@ class FoodTruckDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("ignore", "inOnViewCreated")
-        tabStateAdapter = TabStateAdapter(this, foodItems, reviews)
+        tabStateAdapter = TabStateAdapter(this, args.foodTruck)
         viewPager = view.findViewById(R.id.viewPager2)
         viewPager.adapter = tabStateAdapter
         tabLayout = view.findViewById(R.id.tabLayout)
