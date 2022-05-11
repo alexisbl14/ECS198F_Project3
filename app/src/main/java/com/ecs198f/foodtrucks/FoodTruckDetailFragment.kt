@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.ecs198f.foodtrucks.databinding.FragmentFoodTruckDetailBinding
+import com.google.android.material.tabs.TabLayoutMediator
+import layout.TabStateAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,6 +19,9 @@ import retrofit2.Response
 class FoodTruckDetailFragment : Fragment() {
     private val args: FoodTruckDetailFragmentArgs by navArgs()
     private lateinit var foodItems : List<FoodItem>
+
+    private lateinit var tabStateAdapter: TabStateAdapter
+    private lateinit var viewPager: ViewPager2
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,5 +63,13 @@ class FoodTruckDetailFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        tabStateAdapter = TabStateAdapter(this, foodItems)
+        viewPager = view.findViewById(R.id.viewPager2)
+        viewPager.adapter = tabStateAdapter
+        val tabLayout = view.findViewById(R.id.tabLayout)
+        TabLayoutMediator(tabLayout, viewPager)
     }
 }
