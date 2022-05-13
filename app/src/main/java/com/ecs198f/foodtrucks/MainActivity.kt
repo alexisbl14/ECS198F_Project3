@@ -2,6 +2,7 @@ package com.ecs198f.foodtrucks
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.room.Room
 import com.ecs198f.foodtrucks.databinding.ActivityMainBinding
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext
@@ -13,6 +14,11 @@ import java.lang.reflect.Type
 import java.time.LocalDateTime
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var db: AppDatabase
+    lateinit var foodTruckDao: FoodTruckDao
+    lateinit var foodItemDao: FoodItemDao
+
     private val gson = GsonBuilder()
         .registerTypeAdapter(LocalDateTime::class.java, object : JsonDeserializer<LocalDateTime> {
             override fun deserialize(
@@ -35,6 +41,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        db = Room.databaseBuilder(application, AppDatabase::class.java, "food-truck-db").build()
+        foodTruckDao = db.foodTruckDao()
+        foodItemDao = db.foodItemDao()
 
         title = "Food Trucks"
     }
