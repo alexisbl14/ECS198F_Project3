@@ -1,12 +1,15 @@
 package com.ecs198f.foodtrucks
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ecs198f.foodtrucks.databinding.FragmentFoodTruckListBinding
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,11 +35,24 @@ class FoodTruckListFragment : Fragment() {
                     call: Call<List<FoodTruck>>,
                     response: Response<List<FoodTruck>>
                 ) {
-                    recyclerViewAdapter.updateItems(response.body()!!)
+                    // launch coroutine
+                    lifecycleScope.launch {
+                        // internet accessible, remove current food trucks from dao and add current ones from dao
+                        foodTruckDao.removeAllFoodTrucks()
+                        foodTruckDao.addFoodTrucks(response.body()!!)
+                        // update recycler view with food trucks
+                        recyclerViewAdapter.updateItems(foodTruckDao.listAllFoodTrucks())
+                    }
                 }
 
                 override fun onFailure(call: Call<List<FoodTruck>>, t: Throwable) {
-                    throw t
+                    // not connected to internet, show database
+                    // launch coroutine
+                    lifecycleScope.launch {
+                        // internet not accessible, populate recycler view with current database
+                        recyclerViewAdapter.updateItems(foodTruckDao.listAllFoodTrucks())
+                    }
+
                 }
             })
         }

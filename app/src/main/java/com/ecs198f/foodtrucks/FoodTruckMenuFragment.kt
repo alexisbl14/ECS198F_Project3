@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ecs198f.foodtrucks.databinding.FragmentFoodTruckDetailBinding
 import com.ecs198f.foodtrucks.databinding.FragmentFoodTruckMenuBinding
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,16 +37,20 @@ class FoodTruckMenuFragment(private var foodTruck: FoodTruck) : Fragment() {
                     call: Call<List<FoodItem>>,
                     response: Response<List<FoodItem>>
                 ) {
-                    //recyclerViewAdapter.updateItems(response.body()!!)
-                    // pass data to fragment constructor
-                    //Log.d("ignores this", "success item call")
-                    recyclerViewAdapter.updateItems(response.body()!!)
-                    //Log.d("ignores this", "finish item api call")
+                    lifecycleScope.launch {
+                        // internet accessible, remove current items of current food truck from dao and add new items
+                        foodItemDao.removeFoodItemsForTruck(foodTruck.id)
+                        foodItemDao.addFoodItems(response.body()!!)
+                        recyclerViewAdapter.updateItems(foodItemDao.listFoodItemByTruckId(foodTruck.id))
+                    }
 
                 }
 
                 override fun onFailure(call: Call<List<FoodItem>>, t: Throwable) {
-                    throw t
+                    lifecycleScope.launch {
+                        // internet not accessible, populate recycler view with current database
+                        recyclerViewAdapter.updateItems(foodItemDao.listFoodItemByTruckId(foodTruck.id))
+                    }
                 }
             })
         }
